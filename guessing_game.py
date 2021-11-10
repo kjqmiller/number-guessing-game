@@ -45,13 +45,13 @@ def hint(guess):
 
     upper_range = secret_number + 6
     lower_range = secret_number - 5
-    if guess_count >= (guess_limit - 3) and guess_count != 5:
+    if guess_count >= (guess_limit - 3) and guess_count != guess_limit:
         if guess in range(lower_range, upper_range):
             print('Hint: your guess was within 10 of the secret number.')
         else:
             print('Hint: your guess not within 10 of the secret number.')
 
-    if guess_count >= (guess_limit - 1) and guess_count != 5:
+    if guess_count >= (guess_limit - 1) and guess_count != guess_limit:
         if secret_number % 2 == 0:
             print('Hint: the secret number is even.')
         else:
@@ -61,7 +61,7 @@ def hint(guess):
 def wrong_guess(guess):
     global guess_count
     guess_count += 1
-    if guess_count != 5:
+    if guess_count != guess_limit:
         hint(guess)
         print(f'You have used {guess_count}/{guess_limit} guesses\n')
 
@@ -97,4 +97,3 @@ def play_again():
 
 if __name__ == '__main__':
     main()
-    
