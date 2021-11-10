@@ -1,30 +1,31 @@
 import random
 
 # Initialize secret number, guess limit/count, and game state
-secret_number = random.randint(0, 100)
-guess_limit = 5
+max_num = 50
+min_num = 1
+secret_number = random.randint(min_num, max_num)
+guess_limit = 6
 guess_count = 0
 game_over = False
 
+
 # Main function
 def main():
-    print('Guess the secret number between 1 and 100, you have 5 chances!')
-    guess = None
+    print(f'Guess the secret number in the range {min_num} to {max_num}, you have {guess_limit} chances!')
 
     while not game_over:
         # Get user guess
-        guess = get_guess()
+        guess = get_guess(min_num, max_num)
 
         # Check guess
         if guess != secret_number:
             if guess_count == (guess_limit - 1):
-                print(f'Out of guesses, game over! The secret number was {secret_number}')
+                print(f'\nOut of guesses, game over! The secret number was {secret_number}')
                 play_again()
                 continue
-            if guess < secret_number:
+            elif guess < secret_number:
                 print('Higher! Try again')
-                wrong_guess(
-                    guess)  # guess_count getting incremented here, but still getting higher/lower if guess 5 wrong
+                wrong_guess(guess)
                 continue
             elif guess > secret_number:
                 print('Lower! Try again')
@@ -35,6 +36,7 @@ def main():
             print(f'Correct! The secret number was {secret_number}.')
             play_again()
 
+
 # Functions
 def hint(guess):
     global guess_count
@@ -44,16 +46,17 @@ def hint(guess):
     upper_range = secret_number + 6
     lower_range = secret_number - 5
     if guess_count >= (guess_limit - 3) and guess_count != 5:
-        if guess in range(lower_range, upper_range + 1):
+        if guess in range(lower_range, upper_range):
             print('Hint: your guess was within 10 of the secret number.')
         else:
-            print('Hint: your guess is more than 10 away from the secret number.')
+            print('Hint: your guess not within 10 of the secret number.')
 
     if guess_count >= (guess_limit - 1) and guess_count != 5:
         if secret_number % 2 == 0:
             print('Hint: the secret number is even.')
         else:
             print('Hint: the secret number is odd.')
+
 
 def wrong_guess(guess):
     global guess_count
@@ -63,13 +66,13 @@ def wrong_guess(guess):
         print(f'You have used {guess_count}/{guess_limit} guesses\n')
 
 
-def get_guess():
+def get_guess(min_num, max_num):
     while True:
         player_guess = input('Guess a number: ')
-        if player_guess.isnumeric():
+        if player_guess.isnumeric() and min_num <= int(player_guess) <= max_num:
             return int(player_guess)
         else:
-            print('That is not a valid guess, please guess a number.')
+            print(f'That is not a valid guess, please guess a number in range {min_num} to {max_num}.\n')
             continue
 
 
@@ -78,17 +81,20 @@ def play_again():
         again = input('Would you like to play again? (y/n)?: ')
         if again == 'y':
             global secret_number
-            secret_number = random.randint(0, 100)
+            secret_number = random.randint(min_num, max_num)
             global guess_count
             guess_count = 0
+            print('\n')
             break
         elif again == 'n':
-            print('Thanks for playing!')
+            print('\nThanks for playing!')
             global game_over
             game_over = True
             break
         else:
             print('Please type either y or n.')
 
+
 if __name__ == '__main__':
     main()
+    
